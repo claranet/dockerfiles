@@ -30,7 +30,9 @@ RUN apk add --no-cache \
         coreutils \
         jq \
         python3 \
-        nodejs
+        nodejs \
+        make \
+        bash-completion
 
 COPY --from=deps-go /go/bin/ /usr/local/bin
 COPY --from=deps-python /root/.local/lib /usr/lib
@@ -39,6 +41,8 @@ RUN sed -i 's/local.*/bin\/python3/' /usr/local/bin/j2
 COPY --from=deps-node /usr/local/lib/node_modules/doctoc /usr/lib/node_modules/doctoc
 RUN ln -sf /usr/lib/node_modules/doctoc/doctoc.js /usr/local/bin/doctoc
 
-ENTRYPOINT ["/bin/bash"]
+COPY bashrc /root/.bashrc
+
+ENTRYPOINT []
 HEALTHCHECK NONE
-CMD []
+CMD ["/bin/bash", "-l", "-i"]

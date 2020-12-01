@@ -16,6 +16,8 @@ The image is based on official `terraform` image and add some tools like :
 - `coreutils`
 - `j2cli`
 - `doctoc`
+- `make`
+- `bash-completion`
 
 ## Usage
 
