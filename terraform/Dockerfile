@@ -4,9 +4,10 @@ ENV LC_COLLATE=C \
     LC_ALL=C.UTF-8 \
     LANG=C.UTF-8
 
-RUN GO111MODULE=on go get github.com/hashicorp/terraform-config-inspect
-RUN GO111MODULE=on go get github.com/terraform-docs/terraform-docs@v0.10.1
-RUN GO111MODULE=on go get github.com/terraform-linters/tflint
+RUN GO111MODULE="on" go get github.com/hashicorp/terraform-config-inspect
+RUN GO111MODULE="on" go get github.com/terraform-linters/tflint
+#RUN GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.14.1
+RUN apk add --no-cache curl && curl -LJO https://github.com/terraform-docs/terraform-docs/releases/download/v0.14.1/terraform-docs-v0.14.1-linux-amd64.tar.gz && tar xvzf terraform-docs-*-linux-amd64.tar.gz terraform-docs -C /go/bin
 
 FROM python:3.8-alpine as deps-python 
 #RUN pip install --ignore-installed --target=/install j2cli[yaml] setuptools
@@ -19,7 +20,7 @@ RUN apk add --no-cache \
     npm
 RUN npm install -g --force doctoc
 
-FROM hashicorp/terraform:0.13.5
+FROM hashicorp/terraform:1.0.1
 RUN mkdir /work
 WORKDIR /work
 
