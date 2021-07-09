@@ -9,7 +9,7 @@ RUN GO111MODULE="on" go get github.com/terraform-linters/tflint
 #RUN GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.14.1
 RUN apk add --no-cache curl && curl -LJO https://github.com/terraform-docs/terraform-docs/releases/download/v0.14.1/terraform-docs-v0.14.1-linux-amd64.tar.gz && tar xvzf terraform-docs-*-linux-amd64.tar.gz terraform-docs -C /go/bin
 
-FROM python:3.8-alpine as deps-python 
+FROM python:3-alpine as deps-python 
 #RUN pip install --ignore-installed --target=/install j2cli[yaml] setuptools
 RUN pip install --user --ignore-installed j2cli[yaml] setuptools
 
