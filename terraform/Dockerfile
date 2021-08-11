@@ -12,7 +12,7 @@ RUN apk add --no-cache curl && curl -LJO https://github.com/terraform-docs/terra
 FROM alpine as deps-python 
 RUN apk add --update --no-cache python3 py3-pip
 RUN apk add --update --no-cache libxslt-dev libxml2-dev libxml2 libxslt libc-dev gcc python3-dev
-RUN pip install --user --ignore-installed setuptools j2cli[yaml] pyspelling
+RUN pip install --prefix /usr/local --ignore-installed setuptools j2cli[yaml] pyspelling
 
 FROM node:erbium-alpine as deps-node
 
@@ -38,16 +38,17 @@ RUN apk add --no-cache \
         aspell \
         aspell-en
 
-COPY --from=deps-go /go/bin/ /usr/local/bin
-COPY --from=deps-python /root/.local /root/.local
+COPY --from=deps-python /usr/local /usr/local
 RUN ln -sf python3 /usr/bin/python
+COPY --from=deps-go /go/bin/ /usr/local/bin
 COPY --from=deps-node /usr/local/lib/node_modules/doctoc /usr/lib/node_modules/doctoc
 RUN ln -sf /usr/lib/node_modules/doctoc/doctoc.js /usr/local/bin/doctoc
 COPY --from=deps-node /usr/local/lib/node_modules/markdown-link-check /usr/lib/node_modules/markdown-link-check
 RUN ln -sf /usr/lib/node_modules/markdown-link-check/markdown-link-check /usr/local/bin/markdown-link-check
 
 ENV PATH=/root/.local/bin:${PATH} \
-    SHELL=/bin/bash
+    SHELL=/bin/bash \
+    PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.9/site-packages
 
 COPY bashrc /root/.bashrc
 
