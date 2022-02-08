@@ -7,7 +7,7 @@ ENV LC_COLLATE=C \
 RUN GO111MODULE="on" go get github.com/hashicorp/terraform-config-inspect
 RUN GO111MODULE="on" go get github.com/terraform-linters/tflint
 #RUN GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.14.1
-RUN apk add --no-cache curl && curl -LJO https://github.com/terraform-docs/terraform-docs/releases/download/v0.14.1/terraform-docs-v0.14.1-linux-amd64.tar.gz && tar xvzf terraform-docs-*-linux-amd64.tar.gz terraform-docs -C /go/bin
+RUN apk add --no-cache curl && curl -LJO https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz && tar xvzf terraform-docs-*-linux-amd64.tar.gz terraform-docs -C /go/bin
 
 FROM alpine as deps-python 
 RUN apk add --update --no-cache python3 py3-pip
@@ -21,7 +21,7 @@ RUN apk add --no-cache \
     npm
 RUN npm install -g --force doctoc markdown-link-check
 
-FROM hashicorp/terraform:1.0.4
+FROM hashicorp/terraform:1.1.5
 RUN mkdir /work
 WORKDIR /work
 
